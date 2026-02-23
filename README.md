@@ -2,7 +2,7 @@
 
 Live dashboard tracking my contributions to quantum computing open-source projects at the **Centre for Quantum Technologies (CQT)**, National University of Singapore.
 
-🔗 **[View Dashboard](https://elisortiz.github.io/cqt-progress/)**
+🔗 **[View Dashboard](https://elisendaortiz.github.io/qibo-log/)**
 
 ## What This Is
 
