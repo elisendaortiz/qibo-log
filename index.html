@@ -144,7 +144,10 @@
       <h1><span>Elis Ortiz</span> — CQT Dev Progress</h1>
       <div class="subtitle">Quantum Computing Lab — Weekly Task Tracker</div>
     </div>
-    <div class="updated" id="lastUpdated"></div>
+    <div>
+      <div class="updated" id="projectDuration"></div>
+      <div class="updated" id="lastUpdated"></div>
+    </div>
   </div>
 </div>
 
@@ -305,6 +308,16 @@ function render() {
   }).join('');
 
   document.getElementById('lastUpdated').textContent = 'Last updated: ' + new Date().toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+
+  // Project duration: weekdays from 18 Feb 2026 to today (inclusive)
+  const start = new Date(2026, 1, 18); // 18 Feb 2026
+  const today = new Date(); today.setHours(0,0,0,0);
+  let weekdays = 0;
+  for (let d = new Date(start); d <= today; d.setDate(d.getDate() + 1)) {
+    const day = d.getDay();
+    if (day !== 0 && day !== 6) weekdays++;
+  }
+  document.getElementById('projectDuration').textContent = `Project duration: ${weekdays} days`;
 }
 
 const EFFORT_COLORS = ['#d5d0c8','#b4cfe0','#c5dea0','#f0e868','#f2c28a'];
