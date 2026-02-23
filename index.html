@@ -36,7 +36,9 @@
   .header .updated { color: var(--text-muted); font-size: .75rem; text-align: right; }
 
   .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .75rem; max-width: 1200px; margin: 1.5rem auto; padding: 0 2rem; }
-  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.2rem; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.2rem; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+  .stat-card:hover { border-color: var(--blue); box-shadow: 0 1px 6px rgba(0,0,0,.08); }
+  .stat-card.active-card { border-color: var(--blue); box-shadow: 0 0 0 2px rgba(66,133,244,.25); }
   .stat-card .num { font-size: 1.8rem; font-weight: 700; }
   .stat-card .label { color: var(--text-muted); font-size: .72rem; text-transform: uppercase; letter-spacing: .5px; margin-top: .15rem; }
   .stat-card.done .num { color: var(--green); }
@@ -171,6 +173,7 @@ function categorize(t) {
 }
 
 let activeFilter = 'all';
+let activeStatFilter = null;
 const collapsedWeeks = {};
 
 function toggleWeek(w) {
@@ -186,11 +189,11 @@ function render() {
   const total = DATA.length;
 
   document.getElementById('statsRow').innerHTML = `
-    <div class="stat-card done"><div class="num">${done}</div><div class="label">Completed</div></div>
-    <div class="stat-card ongoing"><div class="num">${ongoing}</div><div class="label">In Progress</div></div>
-    <div class="stat-card blocked"><div class="num">${blocked}</div><div class="label">Blocked</div></div>
+    <div class="stat-card done ${activeStatFilter==='done'?'active-card':''}" onclick="setStatFilter('done')"><div class="num">${done}</div><div class="label">Completed</div></div>
+    <div class="stat-card ongoing ${activeStatFilter==='ongoing'?'active-card':''}" onclick="setStatFilter('ongoing')"><div class="num">${ongoing}</div><div class="label">In Progress</div></div>
+    <div class="stat-card blocked ${activeStatFilter==='blocked'?'active-card':''}" onclick="setStatFilter('blocked')"><div class="num">${blocked}</div><div class="label">Blocked</div></div>
     <div class="stat-card effort"><div class="num">${totalEffort}</div><div class="label">Effort Points</div></div>
-    <div class="stat-card"><div class="num">${total}</div><div class="label">Total Tasks</div></div>
+    <div class="stat-card ${activeStatFilter==='all'?'active-card':''}" onclick="setStatFilter('all')"><div class="num">${total}</div><div class="label">Total Tasks</div></div>
   `;
 
   const pDone = (done / total * 100).toFixed(1);
@@ -221,7 +224,14 @@ function render() {
     sumEl.innerHTML = '';
   }
 
-  const filtered = DATA.filter(d => activeFilter === 'all' || categorize(d) === activeFilter);
+  const filtered = DATA.filter(d => {
+    const catMatch = activeFilter === 'all' || categorize(d) === activeFilter;
+    let statMatch = true;
+    if (activeStatFilter === 'done') statMatch = d.status === 'done';
+    else if (activeStatFilter === 'ongoing') statMatch = d.status === 'ongoing';
+    else if (activeStatFilter === 'blocked') statMatch = !!d.blockage;
+    return catMatch && statMatch;
+  });
   const weeks = [...new Set(filtered.map(d => d.week))];
 
   document.getElementById('taskList').innerHTML = weeks.map(w => {
@@ -275,6 +285,10 @@ function render() {
   document.getElementById('lastUpdated').textContent = 'Last updated: ' + new Date().toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
 }
 
+function setStatFilter(f) {
+  activeStatFilter = activeStatFilter === f ? null : f;
+  render();
+}
 function setFilter(f) { activeFilter = f; render(); }
 loadData();
 </script>
