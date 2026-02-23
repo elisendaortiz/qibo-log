@@ -188,13 +188,17 @@ function render() {
   const totalEffort = DATA.reduce((s, d) => s + (d.effort || 0), 0);
   const total = DATA.length;
 
-  document.getElementById('statsRow').innerHTML = `
-    <div class="stat-card done ${activeStatFilter==='done'?'active-card':''}" onclick="setStatFilter('done')"><div class="num">${done}</div><div class="label">Completed</div></div>
-    <div class="stat-card ongoing ${activeStatFilter==='ongoing'?'active-card':''}" onclick="setStatFilter('ongoing')"><div class="num">${ongoing}</div><div class="label">In Progress</div></div>
-    <div class="stat-card blocked ${activeStatFilter==='blocked'?'active-card':''}" onclick="setStatFilter('blocked')"><div class="num">${blocked}</div><div class="label">Blocked</div></div>
-    <div class="stat-card effort"><div class="num">${totalEffort}</div><div class="label">Effort Points</div></div>
-    <div class="stat-card ${activeStatFilter==='all'?'active-card':''}" onclick="setStatFilter('all')"><div class="num">${total}</div><div class="label">Total Tasks</div></div>
-  `;
+  document.getElementById('statsRow').innerHTML = [
+    ['done', done, 'Completed', 'done'],
+    ['ongoing', ongoing, 'In Progress', 'ongoing'],
+    ['blocked', blocked, 'Blocked', 'blocked'],
+    ['effort', totalEffort, 'Effort Points', null],
+    ['', total, 'Total Tasks', 'all']
+  ].map(([cls, num, label, filter]) => {
+    const clickable = filter ? `onclick="window.setStatFilter('${filter}')"` : '';
+    const active = filter && activeStatFilter === filter ? 'active-card' : '';
+    return `<div class="stat-card ${cls} ${active}" ${clickable}><div class="num">${num}</div><div class="label">${label}</div></div>`;
+  }).join('');
 
   const pDone = (done / total * 100).toFixed(1);
   const pOngoing = (ongoing / total * 100).toFixed(1);
@@ -285,11 +289,15 @@ function render() {
   document.getElementById('lastUpdated').textContent = 'Last updated: ' + new Date().toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
 }
 
-function setStatFilter(f) {
+window.setStatFilter = function(f) {
   activeStatFilter = activeStatFilter === f ? null : f;
   render();
-}
-function setFilter(f) { activeFilter = f; render(); }
+};
+window.setFilter = function(f) { activeFilter = f; render(); };
+window.toggleWeek = function(w) {
+  collapsedWeeks[w] = !collapsedWeeks[w];
+  render();
+};
 loadData();
 </script>
 </body>
