@@ -215,12 +215,15 @@ function render() {
           const catLabel = cat === 'docs' ? 'Docs' : cat.charAt(0).toUpperCase() + cat.slice(1);
           const eff = t.effort;
           const st = t.status || 'tbd';
-          const issueTag = t.issue
+          const hasPr = !!t.pr;
+          const hasIssue = !!t.issue;
+          const showIssue = hasIssue && !hasPr && st !== 'done';
+          const issueTag = showIssue
             ? (t.issue_url
               ? `<a href="${t.issue_url}" target="_blank" class="tag tag-issue">${t.issue} ↗</a>`
               : `<span class="tag tag-issue">${t.issue}</span>`)
             : '';
-          const prTag = t.pr
+          const prTag = hasPr
             ? `<a href="${t.pr}" target="_blank" class="tag tag-pr">PR ↗</a>`
             : '';
           return `

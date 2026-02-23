@@ -1,5 +1,5 @@
 Week ending on day ...,Thing sorted,Effort,Description,Github Issue,Github PR,Status,Blockages,Remarks
-20/02/2026,PR#2: Feature/display plot metrics in report,2,"Changes; Extract and display metrics from plots (prepare_context.py, plots.py, report_template.j2)
+20/02/2026,Feature/display plot metrics in report,2,"Extract and display metrics from plots (prepare_context.py, plots.py, report_template.j2)
 
 Plot functions (mermin_plot, plot_grover, plot_ghz) now return additional values alongside the plot path:
 
@@ -15,14 +15,13 @@ GHZ: success rate removed from plot title (now shown in report text)
 Rename section heading (report_template.j2)
 
 ""Benchmark Results"" → ""Randomized Benchmarking Results""",-,https://github.com/Scinawa/CQT-reporting/pull/2,done,,
-20/02/2026,PR#3: Add Summary metrics table and polish benchmark sections,3,"Summary
-Add new ""Summary metrics"" section (section 6) with a consolidated table of key metrics from all benchmarks, conditionally rendered based on data availability
+20/02/2026,Add Summary metrics table and polish benchmark sections,3,"Add new ""Summary metrics"" section (section 6) with a consolidated table of key metrics from all benchmarks, conditionally rendered based on data availability
 Extract and display additional metrics from plot functions: Mermin max, Grover max probability, GHZ success rate
 Add ""Accuracy test"" bullet point to Reuploading Classifier section
 Rename ""Duration"" to ""Runtime"" and reorder fields in Yeast 3q section
 Rename ""Benchmark Results"" to ""Randomized Benchmarking Results""
 Strip brackets from qubits_used values globally, with ""-"" fallback when missing",-,https://github.com/Scinawa/CQT-reporting/pull/3,done,,
-20/02/2026,Access: NUS Wifi network,1,sorted and tested I can use NUS Wifi not guest,-,-,done,,
+20/02/2026,Access: NUS Wifi network,1,Sorted and tested I can use NUS Wifi not guest,-,-,done,,
 20/02/2026,Bug: conflicting info from overwriting plots,1,"When both left and right sides of the report use the same calibration hash but different run IDs, the Reuploading Classifier plot gets overwritten because its output filename only includes the calibration hash, not the run ID.
 ",CQT-reporting #4,https://github.com/Scinawa/CQT-reporting/pull/5,done,,
 20/02/2026,Access: Server,2,To be able to ssh and send experiments ,-,-,done,,
@@ -31,7 +30,7 @@ Strip brackets from qubits_used values globally, with ""-"" fallback when missin
 20/02/2026,Readme.md CQT-reporting Update,1,Update README .md to reflect current state,CQT-reporting #7,https://github.com/Scinawa/CQT-reporting/pull/6,done,,
 20/02/2026,Access: Slack channel CQT-experimetns,1,"Channel with Ale, Sergi & Paul to get updates",,,ongoing,Ale to do it,
 20/02/2026,Put together Onboarding Instructions,3,List of accesses and server setup steps incl troubleshooting and 1-time configs,-,-,ongoing,,
-27/02/2026,Bug: related to tomography,4," when trying to run 2qubit tomopraphy qibolab is trying to save the circuit somewhere, and then it fails to retrieve it. ",qibocal #1332,https://github.com/qiboteam/qibocal/pull/1391,done,,How do pple run 2qubtis otherwise??
+27/02/2026,Bug: related to tomography,4," When trying to run 2qubit tomopraphy qibolab is trying to save the circuit somewhere, and then it fails to retrieve it. ",qibocal #1332,https://github.com/qiboteam/qibocal/pull/1391,done,,How do pple run 2qubtis otherwise??
 27/02/2026,Bug: related to mermim accumulation times,,"**In repo CQT-experiments**
 Need to try out do some experiment that includes mermin (ideally with the already fixed schema) then try to understand why variable runtime that gets outputed to the results.json is not the accumulated correct one. That will probably have to do with the mechanics that define how the experiment is run so you need to look around in the the ares of the repo that define them.
 **In repo CQT-reporting**
