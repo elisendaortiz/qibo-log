@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oompa Lumpa — CQT Progress</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #f8f9fa;
+    --surface2: #f1f3f4;
+    --border: #dadce0;
+    --text: #202124;
+    --text-muted: #5f6368;
+    --green: #34a853;
+    --green-bg: #e6f4ea;
+    --yellow: #f9ab00;
+    --yellow-bg: #fef7e0;
+    --blue: #4285f4;
+    --blue-bg: #e8f0fe;
+    --orange: #e37400;
+    --orange-bg: #fef0e1;
+    --red: #ea4335;
+    --red-bg: #fce8e6;
+    --purple: #9334e6;
+    --purple-bg: #f3e8fd;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Google Sans', 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  .header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1.8rem 2rem 1.4rem; }
+  .header-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: .5rem; }
+  .header h1 { font-size: 1.5rem; font-weight: 600; color: var(--text); }
+  .header h1 span { color: var(--blue); }
+  .header .subtitle { color: var(--text-muted); font-size: .85rem; }
+  .header .updated { color: var(--text-muted); font-size: .75rem; text-align: right; }
+
+  .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .75rem; max-width: 1200px; margin: 1.5rem auto; padding: 0 2rem; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.2rem; }
+  .stat-card .num { font-size: 1.8rem; font-weight: 700; }
+  .stat-card .label { color: var(--text-muted); font-size: .72rem; text-transform: uppercase; letter-spacing: .5px; margin-top: .15rem; }
+  .stat-card.done .num { color: var(--green); }
+  .stat-card.ongoing .num { color: var(--yellow); }
+  .stat-card.blocked .num { color: var(--orange); }
+  .stat-card.effort .num { color: var(--blue); }
+
+  .main { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem 3rem; }
+
+  .progress-bar-wrap { max-width: 1200px; margin: 1.2rem auto .5rem; padding: 0 2rem; }
+  .progress-label { font-size: .72rem; color: var(--text-muted); margin-bottom: .35rem; display: flex; justify-content: space-between; }
+  .progress-bar-outer { background: var(--surface2); border-radius: 4px; height: 8px; overflow: hidden; display: flex; }
+  .progress-bar-done { background: var(--green); height: 100%; transition: width .6s ease; }
+  .progress-bar-ongoing { background: var(--yellow); height: 100%; transition: width .6s ease; }
+
+  .filters { display: flex; gap: .4rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  .filter-btn { background: var(--bg); border: 1px solid var(--border); color: var(--text-muted); padding: .4rem .9rem; border-radius: 18px; cursor: pointer; font-size: .78rem; transition: all .15s; }
+  .filter-btn:hover { background: var(--surface2); color: var(--text); }
+  .filter-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+  .week-group { margin-bottom: 1.75rem; }
+  .week-label { font-size: .75rem; color: var(--blue); font-weight: 600; margin-bottom: .6rem; padding: .5rem .6rem; letter-spacing: .3px; cursor: pointer; display: flex; align-items: center; gap: .5rem; border-radius: 6px; user-select: none; transition: background .15s; }
+  .week-label:hover { background: var(--blue-bg); }
+  .week-label .chevron { transition: transform .2s; font-size: .65rem; }
+  .week-label.collapsed .chevron { transform: rotate(-90deg); }
+  .week-label .week-summary { margin-left: auto; font-weight: 400; color: var(--text-muted); font-size: .7rem; }
+  .week-tasks { overflow: hidden; transition: max-height .3s ease; }
+  .week-tasks.collapsed { max-height: 0 !important; }
+
+  .task-card { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: .85rem 1rem; margin-bottom: .4rem; display: grid; grid-template-columns: 38px 1fr auto; gap: .7rem; align-items: start; transition: box-shadow .15s, border-color .15s; }
+  .task-card:hover { box-shadow: 0 1px 6px rgba(0,0,0,.08); border-color: var(--blue); }
+
+  .effort-badge { width: 34px; height: 34px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .82rem; flex-shrink: 0; }
+  .effort-1 { background: var(--green-bg); color: var(--green); }
+  .effort-2 { background: var(--blue-bg); color: var(--blue); }
+  .effort-3 { background: var(--yellow-bg); color: var(--yellow); }
+  .effort-4 { background: var(--orange-bg); color: var(--orange); }
+  .effort-5 { background: var(--red-bg); color: var(--red); }
+
+  .task-info h3 { font-size: .85rem; font-weight: 600; margin-bottom: .2rem; line-height: 1.3; }
+  .task-desc { font-size: .76rem; color: var(--text-muted); line-height: 1.4; margin-bottom: .35rem; }
+  .task-meta { display: flex; gap: .4rem; flex-wrap: wrap; align-items: center; }
+  .tag { font-size: .64rem; padding: .18rem .5rem; border-radius: 4px; font-weight: 500; }
+  .tag-issue { background: var(--purple-bg); color: var(--purple); text-decoration: none; }
+  .tag-issue:hover { text-decoration: underline; }
+  .tag-pr { background: var(--blue-bg); color: var(--blue); text-decoration: none; }
+  .tag-pr:hover { text-decoration: underline; }
+  .tag-blockage { background: var(--orange-bg); color: var(--orange); }
+
+  .status-pill { font-size: .68rem; padding: .3rem .7rem; border-radius: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; white-space: nowrap; align-self: center; }
+  .status-done { background: var(--green-bg); color: var(--green); }
+  .status-ongoing { background: var(--yellow-bg); color: var(--yellow); }
+  .status-tbd { background: var(--surface2); color: var(--text-muted); }
+
+  .category-label { display: inline-block; font-size: .58rem; padding: .12rem .4rem; border-radius: 3px; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; margin-right: .2rem; vertical-align: middle; }
+  .cat-feature { background: var(--purple-bg); color: var(--purple); }
+  .cat-bug { background: var(--red-bg); color: var(--red); }
+  .cat-access { background: var(--blue-bg); color: var(--blue); }
+  .cat-docs { background: var(--green-bg); color: var(--green); }
+  .cat-other { background: var(--surface2); color: var(--text-muted); }
+
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .remark { font-size: .7rem; color: var(--text-muted); font-style: italic; margin-top: .25rem; }
+
+  @media (max-width: 600px) {
+    .header { padding: 1.2rem 1rem; }
+    .stats-row, .main, .progress-bar-wrap { padding-left: 1rem; padding-right: 1rem; }
+    .task-card { grid-template-columns: 34px 1fr; }
+    .status-pill { grid-column: 1 / -1; justify-self: start; }
+    .header-inner { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div>
+      <h1><span>Oompa Lumpa</span> — CQT Research Progress</h1>
+      <div class="subtitle">Quantum Computing Lab — Weekly Task Tracker</div>
+    </div>
+    <div class="updated" id="lastUpdated"></div>
+  </div>
+</div>
+
+<div class="progress-bar-wrap">
+  <div class="progress-label"><span id="progLabel"></span><span id="progPct"></span></div>
+  <div class="progress-bar-outer" id="progressBar"></div>
+</div>
+
+<div class="stats-row" id="statsRow"></div>
+
+<div class="main">
+  <div class="filters" id="filters"></div>
+  <div id="taskList"></div>
+</div>
+
+<script>
+let DATA = [];
+const cats = ['all','feature','bug','access','docs','other'];
+
+async function loadData() {
+  try {
+    const r = await fetch('data.json');
+    DATA = await r.json();
+    render();
+  } catch (e) {
+    document.getElementById('taskList').innerHTML = '<p style="color:var(--red);padding:2rem;">Error loading data.json — make sure it exists in the same folder as index.html.</p>';
+  }
+}
+
+function categorize(t) {
+  const n = t.task.toLowerCase();
+  if (n.startsWith('bug')) return 'bug';
+  if (n.startsWith('access')) return 'access';
+  if (n.includes('readme')) return 'docs';
+  if (n.startsWith('pr#') || n.startsWith('feature') || n.includes('summary') || n.startsWith('setup')) return 'feature';
+  return 'other';
+}
+
+let activeFilter = 'all';
+const collapsedWeeks = {};
+
+function toggleWeek(w) {
+  collapsedWeeks[w] = !collapsedWeeks[w];
+  render();
+}
+
+function render() {
+  const done = DATA.filter(d => d.status === 'done').length;
+  const ongoing = DATA.filter(d => d.status === 'ongoing').length;
+  const blocked = DATA.filter(d => d.blockage).length;
+  const totalEffort = DATA.reduce((s, d) => s + (d.effort || 0), 0);
+  const total = DATA.length;
+
+  document.getElementById('statsRow').innerHTML = `
+    <div class="stat-card done"><div class="num">${done}</div><div class="label">Completed</div></div>
+    <div class="stat-card ongoing"><div class="num">${ongoing}</div><div class="label">In Progress</div></div>
+    <div class="stat-card blocked"><div class="num">${blocked}</div><div class="label">Blocked</div></div>
+    <div class="stat-card effort"><div class="num">${totalEffort}</div><div class="label">Effort Points</div></div>
+    <div class="stat-card"><div class="num">${total}</div><div class="label">Total Tasks</div></div>
+  `;
+
+  const pDone = (done / total * 100).toFixed(1);
+  const pOngoing = (ongoing / total * 100).toFixed(1);
+  document.getElementById('progressBar').innerHTML = `
+    <div class="progress-bar-done" style="width:${pDone}%"></div>
+    <div class="progress-bar-ongoing" style="width:${pOngoing}%"></div>
+  `;
+  document.getElementById('progLabel').textContent = `${done} done · ${ongoing} ongoing · ${total - done - ongoing} to do`;
+  document.getElementById('progPct').textContent = `${pDone}% complete`;
+
+  document.getElementById('filters').innerHTML = cats.map(c =>
+    `<button class="filter-btn ${c === activeFilter ? 'active' : ''}" onclick="setFilter('${c}')">${c === 'all' ? 'All Tasks' : c.charAt(0).toUpperCase() + c.slice(1)}</button>`
+  ).join('');
+
+  const filtered = DATA.filter(d => activeFilter === 'all' || categorize(d) === activeFilter);
+  const weeks = [...new Set(filtered.map(d => d.week))];
+
+  document.getElementById('taskList').innerHTML = weeks.map(w => {
+    const tasks = filtered.filter(d => d.week === w);
+    const wDone = tasks.filter(d => d.status === 'done').length;
+    const isCollapsed = !!collapsedWeeks[w];
+    return `
+      <div class="week-group">
+        <div class="week-label ${isCollapsed ? 'collapsed' : ''}" onclick="toggleWeek('${w}')">
+          <span class="chevron">▼</span>
+          Week ending ${w}
+          <span class="week-summary">${wDone}/${tasks.length} done</span>
+        </div>
+        <div class="week-tasks ${isCollapsed ? 'collapsed' : ''}" style="max-height:${isCollapsed ? 0 : tasks.length * 200}px">
+        ${tasks.map(t => {
+          const cat = categorize(t);
+          const catLabel = cat === 'docs' ? 'Docs' : cat.charAt(0).toUpperCase() + cat.slice(1);
+          const eff = t.effort;
+          const st = t.status || 'tbd';
+          const issueTag = t.issue
+            ? (t.issue_url
+              ? `<a href="${t.issue_url}" target="_blank" class="tag tag-issue">${t.issue} ↗</a>`
+              : `<span class="tag tag-issue">${t.issue}</span>`)
+            : '';
+          const prTag = t.pr
+            ? `<a href="${t.pr}" target="_blank" class="tag tag-pr">PR ↗</a>`
+            : '';
+          return `
+            <div class="task-card">
+              ${eff ? `<div class="effort-badge effort-${eff}">${eff}</div>` : '<div class="effort-badge" style="background:var(--surface2);color:var(--text-muted)">—</div>'}
+              <div class="task-info">
+                <h3><span class="category-label cat-${cat}">${catLabel}</span>${t.task}</h3>
+                <div class="task-desc">${t.desc}</div>
+                <div class="task-meta">
+                  ${issueTag}
+                  ${prTag}
+                  ${t.blockage ? `<span class="tag tag-blockage">⏳ ${t.blockage}</span>` : ''}
+                </div>
+                ${t.remark ? `<div class="remark">${t.remark}</div>` : ''}
+              </div>
+              <div class="status-pill status-${st}">${st}</div>
+            </div>`;
+        }).join('')}
+        </div>
+      </div>`;
+  }).join('');
+
+  document.getElementById('lastUpdated').textContent = 'Last updated: ' + new Date().toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+}
+
+function setFilter(f) { activeFilter = f; render(); }
+loadData();
+</script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+Week ending on day ...,Thing sorted,Effort,Description,Github Issue,Github PR,Status,Blockages,Remarks
+20/02/2026,PR#2: Feature/display plot metrics in report,2,"Changes; Extract and display metrics from plots (prepare_context.py, plots.py, report_template.j2)
+
+Plot functions (mermin_plot, plot_grover, plot_ghz) now return additional values alongside the plot path:
+
+Mermin: returns global_max → displayed as ""Max"" in the report
+Grover 2Q/3Q: returns max_prob → displayed as ""Max prob"" in the report
+GHZ: returns success_rate → displayed as ""Success"" in the report
+prepare_context.py unpacks these new return values and stores them in the template context. The template adds a new list item for each metric in both left and right columns.
+
+Move plot metadata from titles into report body (plots.py)
+
+Mermin: max value removed from plot title (now shown in report text)
+GHZ: success rate removed from plot title (now shown in report text)
+Rename section heading (report_template.j2)
+
+""Benchmark Results"" → ""Randomized Benchmarking Results""",-,https://github.com/Scinawa/CQT-reporting/pull/2,done,,
+20/02/2026,PR#3: Add Summary metrics table and polish benchmark sections,3,"Summary
+Add new ""Summary metrics"" section (section 6) with a consolidated table of key metrics from all benchmarks, conditionally rendered based on data availability
+Extract and display additional metrics from plot functions: Mermin max, Grover max probability, GHZ success rate
+Add ""Accuracy test"" bullet point to Reuploading Classifier section
+Rename ""Duration"" to ""Runtime"" and reorder fields in Yeast 3q section
+Rename ""Benchmark Results"" to ""Randomized Benchmarking Results""
+Strip brackets from qubits_used values globally, with ""-"" fallback when missing",-,https://github.com/Scinawa/CQT-reporting/pull/3,done,,
+20/02/2026,Access: NUS Wifi network,1,sorted and tested I can use NUS Wifi not guest,-,-,done,,
+20/02/2026,Bug: conflicting info from overwriting plots,1,"When both left and right sides of the report use the same calibration hash but different run IDs, the Reuploading Classifier plot gets overwritten because its output filename only includes the calibration hash, not the run ID.
+",CQT-reporting #4,https://github.com/Scinawa/CQT-reporting/pull/5,done,,
+20/02/2026,Access: Server,2,To be able to ssh and send experiments ,-,-,done,,
+20/02/2026,Access: AWS DataBase ,2,To be able to retrieve experiment results,-,-,done,,
+20/02/2026,Access:  NQCH account to create a Token,2,To be able to get an API Token,-,-,ongoing,NQCH to reply,What was the purpose of the token? And when to followup?
+20/02/2026,Readme.md CQT-reporting Update,1,Update README .md to reflect current state,CQT-reporting #7,https://github.com/Scinawa/CQT-reporting/pull/6,done,,
+20/02/2026,Access: Slack channel CQT-experimetns,1,"Channel with Ale, Sergi & Paul to get updates",,,ongoing,Ale to do it,
+20/02/2026,Put together Onboarding Instructions,3,List of accesses and server setup steps incl troubleshooting and 1-time configs,-,-,ongoing,,
+27/02/2026,Bug: related to tomography,4," when trying to run 2qubit tomopraphy qibolab is trying to save the circuit somewhere, and then it fails to retrieve it. ",qibocal #1332,https://github.com/qiboteam/qibocal/pull/1391,done,,How do pple run 2qubtis otherwise??
+27/02/2026,Bug: related to mermim accumulation times,,"**In repo CQT-experiments**
+Need to try out do some experiment that includes mermin (ideally with the already fixed schema) then try to understand why variable runtime that gets outputed to the results.json is not the accumulated correct one. That will probably have to do with the mechanics that define how the experiment is run so you need to look around in the the ares of the repo that define them.
+**In repo CQT-reporting**
+In Current playground *branch* claude given you indications of where the numeric values com from (from which results.json fields) this is the outcome: 
+```
+OK so to confirm — the data flow for the Mermin runtime in CQT-reporting is:
+
+1. **Source**: `data/<calibration>/<run>/mermin/results.json` → field `""runtime""` (line 215, 230 in [prepare_context.py](vscode-webview://0jt13lf22omnhlv6qtv9ki1jtdce6lvn6faphcfeja2csiln644o/CQT-reporting/src/prepare_context.py#L215))
+2. **Extraction**: `fl.extract_runtime(results_path)` reads `results.get(""runtime"", None)` ([fillers.py:64-70](vscode-webview://0jt13lf22omnhlv6qtv9ki1jtdce6lvn6faphcfeja2csiln644o/CQT-reporting/src/fillers.py#L64-L70))
+3. **Formatting**: `format_runtime()` converts it to `""{value:.2f} seconds""` ([fillers.py:35-61](vscode-webview://0jt13lf22omnhlv6qtv9ki1jtdce6lvn6faphcfeja2csiln644o/CQT-reporting/src/fillers.py#L35-L61))
+4. **Template**: `{{ left.mermin_runtime }}` and `{{ right.mermin_runtime }}` ([report_template.j2:308,324](vscode-webview://0jt13lf22omnhlv6qtv9ki1jtdce6lvn6faphcfeja2csiln644o/CQT-reporting/src/templates/report_template.j2#L308))
+```",CQT-experiments #40,,,,
+27/02/2026,Feature: Undo folder nested structure,,"Go from nested folder structure to expanded result.json (3)
+
+**In repo CQT-reporting**
+You need to not have things like Mermin/2 and Mermin/3 and Mermin/4 for the different folders of results of different number of qubits for the Mermin. Instead you need to have a single results.json for Mermin where the schema has as keys the number of qbits and then for each, the results params. Then the parsing of these new expanded results.json files needs to be done differently to adjust the correct creation of the latex templates for the pdf reports to show the correct numbers for each section. 
+
+This is to be done not only for mermin but also for ghz, mermin, qft.",,,,,
+27/02/2026,Feature: Add QFT3qubit-swap section in reporting ,,Add the section for experiment qft3-swap by clonning the exact same strucutre as for current QFT,CQT-reporting/issues/17,,ongoing,,
+27/02/2026,Access: Added to the qibo email listing from Scarraza,,Sergi to ask Scarrazza to add your email,-,-,ongoing,,
+27/02/2026,Summary table: aesthetics to group same benchmark left-right metrics for comparison,,separate wiht lines between experiments and gray-white colorcode,CQT-reporting/issues/12,https://github.com/Scinawa/CQT-reporting/pull/21,ongoing,Sergi to reply to commetn (new terminology required),Pending to change the actual names of  col left/right
+27/02/2026,Summary metrics: support all routines,,Support all existing routines in summary metrics.,CQT-reporting/issues/13,,ongoing,Sergi to reply to comment (validate list of additions),Verify which routines if any missing/otherwise done
+,,,,,,,,
+,Add issues from here: https://github.com/Scinawa/CQT-reporting,,,,,,,
