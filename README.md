@@ -1,5 +1,3 @@
-# qibo-log
-
 # Elis Ortiz — CQT Dev Progress
 
 Live dashboard tracking my contributions to quantum computing open-source projects at the **Centre for Quantum Technologies (CQT)**, National University of Singapore.
