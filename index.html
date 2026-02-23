@@ -52,7 +52,15 @@
   .progress-bar-done { background: var(--green); height: 100%; transition: width .6s ease; }
   .progress-bar-ongoing { background: var(--yellow); height: 100%; transition: width .6s ease; }
 
-  .filters { display: flex; gap: .4rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  .filter-row { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.25rem; align-items: center; }
+  .filters { display: flex; gap: .4rem; flex-wrap: wrap; }
+  .filter-summary { font-size: .85rem; font-weight: 600; color: var(--text-muted); display: flex; align-items: center; gap: .4rem; opacity: 0; transform: translateY(-4px); transition: opacity .25s, transform .25s; }
+  .filter-summary.visible { opacity: 1; transform: translateY(0); }
+  .filter-summary .fs-label { color: var(--text-muted); }
+  .filter-summary .fs-done { color: var(--green); font-size: 1.1rem; font-weight: 700; }
+  .filter-summary .fs-sep { color: var(--border); }
+  .filter-summary .fs-total { color: var(--text-muted); font-size: 1.1rem; font-weight: 700; }
+  .filter-summary .fs-pct { font-size: .75rem; color: var(--text-muted); font-weight: 400; margin-left: .15rem; }
   .filter-btn { background: var(--bg); border: 1px solid var(--border); color: var(--text-muted); padding: .4rem .9rem; border-radius: 18px; cursor: pointer; font-size: .78rem; transition: all .15s; }
   .filter-btn:hover { background: var(--surface2); color: var(--text); }
   .filter-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
@@ -132,7 +140,10 @@
 <div class="stats-row" id="statsRow"></div>
 
 <div class="main">
-  <div class="filters" id="filters"></div>
+  <div class="filter-row">
+    <div class="filters" id="filters"></div>
+    <div class="filter-summary" id="filterSummary"></div>
+  </div>
   <div id="taskList"></div>
 </div>
 
@@ -194,6 +205,21 @@ function render() {
   document.getElementById('filters').innerHTML = cats.map(c =>
     `<button class="filter-btn ${c === activeFilter ? 'active' : ''}" onclick="setFilter('${c}')">${c === 'all' ? 'All Tasks' : c.charAt(0).toUpperCase() + c.slice(1)}</button>`
   ).join('');
+
+  // Filter summary
+  const sumEl = document.getElementById('filterSummary');
+  if (activeFilter !== 'all') {
+    const catItems = DATA.filter(d => categorize(d) === activeFilter);
+    const catDone = catItems.filter(d => d.status === 'done').length;
+    const catTotal = catItems.length;
+    const catPct = catTotal > 0 ? Math.round(catDone / catTotal * 100) : 0;
+    const catName = activeFilter.charAt(0).toUpperCase() + activeFilter.slice(1);
+    sumEl.innerHTML = `<span class="fs-label">${catName} Done</span> <span class="fs-done">${catDone}</span><span class="fs-sep">/</span><span class="fs-total">${catTotal}</span><span class="fs-pct">(${catPct}%)</span>`;
+    sumEl.classList.add('visible');
+  } else {
+    sumEl.classList.remove('visible');
+    sumEl.innerHTML = '';
+  }
 
   const filtered = DATA.filter(d => activeFilter === 'all' || categorize(d) === activeFilter);
   const weeks = [...new Set(filtered.map(d => d.week))];
