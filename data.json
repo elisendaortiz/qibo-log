@@ -127,14 +127,14 @@
     "issue": "qibocal #1332",
     "issue_url": "https://github.com/qiboteam/qibocal/issues/1332",
     "pr": "https://github.com/qiboteam/qibocal/pull/1391",
-    "status": "done",
+    "status": "ongoing",
     "blockage": "",
     "remark": "How do pple run 2qubtis otherwise??"
   },
   {
     "week": "27/02/2026",
     "task": "Bug: related to mermim accumulation times",
-    "effort": null,
+    "effort": 3,
     "desc": "**In repo CQT-experiments**\nNeed to try out do some experiment that includes mermin (ideally with the already fixed schema) then try to understand why variable runtime that gets outputed to the results.json is not the accumulated correct one. That will probably have to do with the mechanics that define how the experiment is run so you need to look around in the the ares of the repo that define them.\n**In repo CQT-reporting**\nIn Current playground *branch* claude given you indications of where the numeric values com from (from which results.json fields) this is the outcome: \n```\nOK so to confirm — the data flow for the Mermin runtime in CQT-reporting is:\n\n1. **Source**: `data/<calibration>/<run>/mermin/results.json` → field `\"runtime\"` (line 215, 230 in [prepare_context.py](vscode-webview://0jt13lf22omnhlv6qtv9ki1jtdce6lvn6faphcfeja2csiln644o/CQT-reporting/src/prepare_context.py#L215))\n2. **Extraction**: `fl.extract_runtime(results_path)` reads `results.get(\"runtime\", None)` ([fillers.py:64-70](vscode-webview://0jt13lf22omnhlv6qtv9ki1jtdce6lvn6faphcfeja2csiln644o/CQT-reporting/src/fillers.py#L64-L70))\n3. **Formatting**: `format_runtime()` converts it to `\"{value:.2f} seconds\"` ([fillers.py:35-61](vscode-webview://0jt13lf22omnhlv6qtv9ki1jtdce6lvn6faphcfeja2csiln644o/CQT-reporting/src/fillers.py#L35-L61))\n4. **Template**: `{{ left.mermin_runtime }}` and `{{ right.mermin_runtime }}` ([report_template.j2:308,324](vscode-webview://0jt13lf22omnhlv6qtv9ki1jtdce6lvn6faphcfeja2csiln644o/CQT-reporting/src/templates/report_template.j2#L308))\n```",
     "issue": "CQT-experiments #40",
     "issue_url": "https://github.com/Scinawa/CQT-experiments/issues/40",
@@ -146,7 +146,7 @@
   {
     "week": "27/02/2026",
     "task": "Feature: Undo folder nested structure",
-    "effort": null,
+    "effort": 5,
     "desc": "Go from nested folder structure to expanded result.json (3)\n\n**In repo CQT-reporting**\nYou need to not have things like Mermin/2 and Mermin/3 and Mermin/4 for the different folders of results of different number of qubits for the Mermin. Instead you need to have a single results.json for Mermin where the schema has as keys the number of qbits and then for each, the results params. Then the parsing of these new expanded results.json files needs to be done differently to adjust the correct creation of the latex templates for the pdf reports to show the correct numbers for each section. \n\nThis is to be done not only for mermin but also for ghz, mermin, qft.",
     "issue": "",
     "issue_url": "",
@@ -158,7 +158,7 @@
   {
     "week": "27/02/2026",
     "task": "Feature: Add QFT3qubit-swap section in reporting",
-    "effort": null,
+    "effort": 3,
     "desc": "Add the section for experiment qft3-swap by clonning the exact same strucutre as for current QFT",
     "issue": "CQT-reporting #17",
     "issue_url": "https://github.com/Scinawa/CQT-reporting/issues/17",
@@ -170,7 +170,7 @@
   {
     "week": "27/02/2026",
     "task": "Access: Added to the qibo email listing from Scarraza",
-    "effort": null,
+    "effort": 1,
     "desc": "Sergi to ask Scarrazza to add your email",
     "issue": "",
     "issue_url": "",
@@ -182,7 +182,7 @@
   {
     "week": "27/02/2026",
     "task": "Summary table: aesthetics to group same benchmark left-right metrics for comparison",
-    "effort": null,
+    "effort": 1,
     "desc": "separate wiht lines between experiments and gray-white colorcode",
     "issue": "CQT-reporting #12",
     "issue_url": "https://github.com/Scinawa/CQT-reporting/issues/12",
@@ -194,20 +194,20 @@
   {
     "week": "27/02/2026",
     "task": "Summary metrics: support all routines",
-    "effort": null,
+    "effort": 2,
     "desc": "Support all existing routines in summary metrics.",
     "issue": "CQT-reporting #13",
     "issue_url": "https://github.com/Scinawa/CQT-reporting/issues/13",
     "pr": "https://github.com/Scinawa/CQT-reporting/issues/13",
-    "status": "ongoing",
+    "status": "",
     "blockage": "Sergi to reply to comment (validate list of additions)",
     "remark": "Verify which routines if any missing/otherwise done"
   },
   {
     "week": "27/02/2026",
     "task": "Fix Statistics left col values correctedness",
-    "effort": null,
-    "desc": "Verify that the metrics calculated are from the right numers/source which should be in hash/run/coherence results.json file that is misisng",
+    "effort": 4,
+    "desc": "Verify that the metrics calculated are from the right numbers/source which should be in hash/run/coherence results.json file that is misisng",
     "issue": "",
     "issue_url": "",
     "pr": "",
