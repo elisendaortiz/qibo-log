@@ -103,7 +103,7 @@
     "issue": "",
     "issue_url": "",
     "pr": "",
-    "status": "ongoing",
+    "status": "done",
     "blockage": "Ale to do it",
     "remark": ""
   },
@@ -122,7 +122,7 @@
   {
     "week": "27/02/2026",
     "task": "Bug: related to tomography",
-    "effort": 4,
+    "effort": 5,
     "desc": "When trying to run 2qubit tomopraphy qibolab is trying to save the circuit somewhere, and then it fails to retrieve it.",
     "issue": "qibocal #1332",
     "issue_url": "https://github.com/qiboteam/qibocal/issues/1332",
@@ -162,8 +162,8 @@
     "desc": "Add the section for experiment qft3-swap by clonning the exact same strucutre as for current QFT",
     "issue": "CQT-reporting #17",
     "issue_url": "https://github.com/Scinawa/CQT-reporting/issues/17",
-    "pr": "",
-    "status": "ongoing",
+    "pr": "https://github.com/Scinawa/CQT-reporting/pull/22",
+    "status": "done",
     "blockage": "",
     "remark": ""
   },
@@ -188,8 +188,8 @@
     "issue_url": "https://github.com/Scinawa/CQT-reporting/issues/12",
     "pr": "https://github.com/Scinawa/CQT-reporting/pull/21",
     "status": "ongoing",
-    "blockage": "Sergi to reply to commetn (new terminology required)",
-    "remark": "Pending to change the actual names of  col left/right"
+    "blockage": "",
+    "remark": "New chnages to be incorporated include: splitting table in left-right & re-ordering columns"
   },
   {
     "week": "27/02/2026",
@@ -198,9 +198,21 @@
     "desc": "Support all existing routines in summary metrics.",
     "issue": "CQT-reporting #13",
     "issue_url": "https://github.com/Scinawa/CQT-reporting/issues/13",
-    "pr": "",
+    "pr": "https://github.com/Scinawa/CQT-reporting/issues/13",
     "status": "ongoing",
     "blockage": "Sergi to reply to comment (validate list of additions)",
     "remark": "Verify which routines if any missing/otherwise done"
+  },
+  {
+    "week": "27/02/2026",
+    "task": "Fix Statistics left col values correctedness",
+    "effort": null,
+    "desc": "Verify that the metrics calculated are from the right numers/source which should be in hash/run/coherence results.json file that is misisng",
+    "issue": "",
+    "issue_url": "",
+    "pr": "",
+    "status": "",
+    "blockage": "",
+    "remark": ""
   }
 ]
