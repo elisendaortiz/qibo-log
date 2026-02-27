@@ -175,7 +175,7 @@
     "issue": "",
     "issue_url": "",
     "pr": "",
-    "status": "ongoing",
+    "status": "done",
     "blockage": "",
     "remark": ""
   },
@@ -199,7 +199,7 @@
     "issue": "CQT-reporting #13",
     "issue_url": "https://github.com/Scinawa/CQT-reporting/issues/13",
     "pr": "https://github.com/Scinawa/CQT-reporting/issues/13",
-    "status": "",
+    "status": "done",
     "blockage": "Sergi to reply to comment (validate list of additions)",
     "remark": "Verify which routines if any missing/otherwise done"
   },
