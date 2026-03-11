@@ -306,8 +306,8 @@
     "desc": "Statistics defaults to the results in the calibration folder, even when the experiments are run.\nIt should first look if the experiment is run and use those values. If the experiment is not there, it can use the data of the latest calibration, and should indicate it with a different color.",
     "issue": "CQT-reporting #11",
     "issue_url": "https://github.com/Scinawa/CQT-reporting/issues/11",
-    "pr": "",
-    "status": "ongoing",
+    "pr": "https://github.com/Scinawa/CQT-reporting/pull/28",
+    "status": "done",
     "blockage": "waiting for sergi to clarify what to do wit 2qubit rand benchmarking for experiments runs and if to incl coupling",
     "remark": ""
   },
@@ -318,7 +318,7 @@
     "desc": "The Fidelity from randomized benchmarking is not properly displayed, even when data exists in Randomized Benchmarking Results.",
     "issue": "CQT-reporting #10",
     "issue_url": "https://github.com/Scinawa/CQT-reporting/issues/10",
-    "pr": "",
+    "pr": "https://github.com/Scinawa/CQT-reporting/pull/28",
     "status": "done",
     "blockage": "",
     "remark": ""
@@ -330,9 +330,81 @@
     "desc": "Fidelity info displayed needs to come from the actual last run not default to calibradion",
     "issue": "CQT-reporting #9",
     "issue_url": "https://github.com/Scinawa/CQT-reporting/issues/9",
+    "pr": "https://github.com/Scinawa/CQT-reporting/pull/28",
+    "status": "done",
+    "blockage": "waiting confirmation from Sergi to proceed with defulting left-table values to calibration ones equal to right table values AND/OR signal them with asterisk on the left when that happens and the displayed values are not from this run but are the defaulting ones from the right calibration. Asterisk should add on top or bottom of the left tables a one-liner explaining it means the run did not have info and thus the displayed one is from the last calibration.",
+    "remark": ""
+  },
+  {
+    "week": "13/03/2026",
+    "task": "Bug: statistics from best calibration not showing up",
+    "effort": 5,
+    "desc": "Context: We want the info in the right col of the report (statistics table) to be coming from the calibration that sergi sets using set_best. Now, the problem seems to be that after uploading this data to the AWS DB and despite this data supposedly being there, despite setting the uploaded calibration to set_best, when pulling data into the report we still pull the data from the Last calibration not the set_best one. This affects exclusively right column sourced data.\n\nProblem: It is unclear atm if that's a problem with data not reaching the DB, with data pulling not pointed correctly or some casual overwriting in the reporting manufacture.",
+    "issue": "CQT-reporting #27",
+    "issue_url": "https://github.com/Scinawa/CQT-reporting/issues/27",
+    "pr": "https://github.com/Scinawa/CQT-reporting/pull/31",
+    "status": "done",
+    "blockage": "",
+    "remark": ""
+  },
+  {
+    "week": "13/03/2026",
+    "task": "Bug: statistics from latest run on left col not always the latest info uploaded to AWS DB",
+    "effort": 5,
+    "desc": "We need to completely make sure that the information in the left col of statistics table corresponds to the latest in the DB, apparently sometimes is not the case",
+    "issue": "CQT-reporting #29",
+    "issue_url": "https://github.com/Scinawa/CQT-reporting/issues/29",
+    "pr": "https://github.com/Scinawa/CQT-reporting/pull/31",
+    "status": "done",
+    "blockage": "",
+    "remark": ""
+  },
+  {
+    "week": "13/03/2026",
+    "task": "Infra: Decide on deployment workflow dependencies management",
+    "effort": 4,
+    "desc": "We want to regularly on chron run automated benchmarking experiments so that users have up to date bechmarking reports.pdf available. Given the drift between most recent qibocal, and other repos and the versions in the modules and the fact that those versions are not transparent for reproducibility we want to evaluate if and how to setup the environ to have crystal clear dependency control so that all benchmarks that areauto-produced on the deployment repo (client facing) can be investigated if crashed or wrong.",
+    "issue": "CQT-reporting #30",
+    "issue_url": "https://github.com/Scinawa/CQT-reporting/issues/30",
+    "pr": "",
+    "status": "done",
+    "blockage": "",
+    "remark": ""
+  },
+  {
+    "week": "13/03/2026",
+    "task": "Feature: Create github page to display latest report.pdf for production piepeline",
+    "effort": 2,
+    "desc": "We want a landing page with the latest rendered pdf report that auto-generates from the latest data from the experiments (from AWS DB) running from the production pipeline",
+    "issue": "",
+    "issue_url": "",
     "pr": "",
     "status": "ongoing",
-    "blockage": "waiting confirmation from Sergi to proceed with defulting left-table values to calibration ones equal to right table values AND/OR signal them with asterisk on the left when that happens and the displayed values are not from this run but are the defaulting ones from the right calibration. Asterisk should add on top or bottom of the left tables a one-liner explaining it means the run did not have info and thus the displayed one is from the last calibration.",
+    "blockage": "Need to finalize the seting in CQT-Reporting when Ale gives me access to the Features settings",
+    "remark": ""
+  },
+  {
+    "week": "13/03/2026",
+    "task": "Infra: enhance secrets management security",
+    "effort": 4,
+    "desc": "create a per-user single secrets file (.env) that is the one pointed at for all secrets, tokens, keys, credentials etc by  all repos that require this sort of variables to connect to DBs or other servers. This is to avoid having any secrets inside each of the cloned respos per se even if taken care by .gitignore. You'll nee to audit all places that'll need to update the env path and the loading of the variables.",
+    "issue": "",
+    "issue_url": "",
+    "pr": "",
+    "status": "",
+    "blockage": "",
+    "remark": ""
+  },
+  {
+    "week": "13/03/2026",
+    "task": "Infra: compatibility matrix for dev env",
+    "effort": 3,
+    "desc": "Create a compatibility matrix.md to pass on to setup_dev_env.sh to automatically fallback to cross-repo compatible package versions.",
+    "issue": "CQT-reporting #30",
+    "issue_url": "https://github.com/Scinawa/CQT-reporting/issues/30?issue=Scinawa%7CCQT-reporting%7C32",
+    "pr": "",
+    "status": "ongoing",
+    "blockage": "",
     "remark": ""
   }
 ]
