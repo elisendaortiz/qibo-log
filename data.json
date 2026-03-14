@@ -139,8 +139,8 @@
     "issue": "CQT-experiments #40",
     "issue_url": "https://github.com/Scinawa/CQT-experiments/issues/40",
     "pr": "",
-    "status": "",
-    "blockage": "",
+    "status": "ongoing",
+    "blockage": "Sergi picked up the task, need to check status",
     "remark": ""
   },
   {
@@ -308,7 +308,7 @@
     "issue_url": "https://github.com/Scinawa/CQT-reporting/issues/11",
     "pr": "https://github.com/Scinawa/CQT-reporting/pull/28",
     "status": "done",
-    "blockage": "waiting for sergi to clarify what to do wit 2qubit rand benchmarking for experiments runs and if to incl coupling",
+    "blockage": "Need to finalize wiring up the correct paths for the data, sourcing from the strucutre of experiments in nqch-deploy",
     "remark": ""
   },
   {
