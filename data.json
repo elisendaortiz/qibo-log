@@ -308,7 +308,7 @@
     "issue_url": "https://github.com/Scinawa/CQT-reporting/issues/11",
     "pr": "https://github.com/Scinawa/CQT-reporting/pull/28",
     "status": "done",
-    "blockage": "Need to finalize wiring up the correct paths for the data, sourcing from the strucutre of experiments in nqch-deploy",
+    "blockage": "",
     "remark": ""
   },
   {
@@ -463,7 +463,7 @@
     "issue": "CQT-reporting #34",
     "issue_url": "https://github.com/Scinawa/CQT-reporting/issues/34",
     "pr": "",
-    "status": "",
+    "status": "ongoing",
     "blockage": "",
     "remark": ""
   },
@@ -475,7 +475,7 @@
     "issue": "CQT-reporting #33",
     "issue_url": "https://github.com/Scinawa/CQT-reporting/issues/33",
     "pr": "",
-    "status": "",
+    "status": "ongoing",
     "blockage": "",
     "remark": ""
   }
