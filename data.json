@@ -332,7 +332,7 @@
     "issue_url": "https://github.com/Scinawa/CQT-reporting/issues/9",
     "pr": "https://github.com/Scinawa/CQT-reporting/pull/28",
     "status": "done",
-    "blockage": "waiting confirmation from Sergi to proceed with defulting left-table values to calibration ones equal to right table values AND/OR signal them with asterisk on the left when that happens and the displayed values are not from this run but are the defaulting ones from the right calibration. Asterisk should add on top or bottom of the left tables a one-liner explaining it means the run did not have info and thus the displayed one is from the last calibration.",
+    "blockage": "",
     "remark": ""
   },
   {
