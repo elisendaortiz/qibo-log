@@ -257,7 +257,11 @@ function render() {
     else if (activeStatFilter === 'blocked') statMatch = !!d.blockage;
     return catMatch && statMatch;
   });
-  const weeks = [...new Set(filtered.map(d => d.week))];
+  const weeks = [...new Set(filtered.map(d => d.week))].sort((a, b) => {
+    const [ad, am, ay] = a.split('/');
+    const [bd, bm, by] = b.split('/');
+    return new Date(by, bm - 1, bd) - new Date(ay, am - 1, ad);
+  });
 
   document.getElementById('taskList').innerHTML = weeks.map(w => {
     const tasks = filtered.filter(d => d.week === w);
