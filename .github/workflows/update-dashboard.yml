@@ -1,0 +1,33 @@
+name: Update dashboard data
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Download latest CSV from Google Sheets
+        run: |
+          curl -fsSL -o progress_log.csv \
+            "https://docs.google.com/spreadsheets/d/1kiY6QX52Ep6oRyn_A2H15jlZVcj7txUyAPjt_VISzjE/export?format=csv&gid=0"
+
+      - name: Convert CSV to JSON
+        run: python csv_to_json.py progress_log.csv data.json
+
+      - name: Upload data.json artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: data-json
+          path: data.json
